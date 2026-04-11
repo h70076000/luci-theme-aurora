@@ -614,6 +614,34 @@
         @apply before:translate-x-[calc(200%+1rem)];
       }
     }
+
+    /* Theme-switch view transition.
+       The circular reveal is driven from header.ut via
+       document.startViewTransition() + Web Animations API; the rules
+       below only suppress the default cross-fade and pin the "dark"
+       snapshot on top so the expanding/retracting circle reads right. */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      @apply animate-none mix-blend-normal;
+    }
+
+    :root:not([data-darkmode="true"]) {
+      &::view-transition-old(root) {
+        @apply z-[9999];
+      }
+      &::view-transition-new(root) {
+        @apply z-[1];
+      }
+    }
+
+    :root[data-darkmode="true"] {
+      &::view-transition-new(root) {
+        @apply z-[9999];
+      }
+      &::view-transition-old(root) {
+        @apply z-[1];
+      }
+    }
   }
 
   @layer floatButton {
